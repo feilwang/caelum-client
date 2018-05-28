@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import {Tabbar, TabbarItem} from 'vant';
+  import {Tabbar, TabbarItem} from 'vant'
 
   export default {
     name: 'Home',
@@ -18,9 +18,20 @@
       Tabbar,
       TabbarItem
     },
+    created() {
+      let path = this.$route.path;
+      if (path === '/list') {
+        this.active = 0;
+      } else if (path === '/my') {
+        this.active = 1;
+      } else if (path === '/setting') {
+        this.active = 2;
+      } else {
+        this.active = 0;
+      }
+    },
     data() {
       return {
-        msg: '微打卡',
         active: 0
       }
     }
