@@ -8,9 +8,9 @@ let baseServer = function (path, method) {
   }
 };
 let apiList = {
-  getUserInfo: baseServer('/getUserInfo', 'POST'),
-  register: baseServer('/register', 'POST'),
-  login: baseServer('/login', 'POST')
+  getUserInfo: baseServer('/api/getUserInfo', 'POST'),
+  register: baseServer('/api/register', 'POST'),
+  login: baseServer('/api/login', 'POST')
 };
 
 export default apiList;

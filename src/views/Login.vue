@@ -51,11 +51,11 @@
         phone = this.phone.trim();
         password = this.password;
         if (phone.trim() === '') {
-          Toast.fail('请输入手机号');
+          Toast('请输入手机号');
           return;
         }
         if (password === '') {
-          Toast.fail('请输入密码');
+          Toast('请输入密码');
           return;
         }
         this.$request({
@@ -66,10 +66,12 @@
           }
         }, res => {
           console.log('getUserInfo success:', res);
+          Toast.success('登录成功！');
           this.$store.commit('LOGIN', {isLogined: true, userInfo: res.data});
           this.$router.push(this.$route.query.redirect || '/')
         }, err => {
           console.warn('getUserInfo failed:', err);
+          Toast(err.message);
         });
       }
     }
