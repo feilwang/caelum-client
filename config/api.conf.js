@@ -4,5 +4,5 @@
 const isPro = Object.is(process.env.NODE_ENV, 'production');
 
 export default {
-  baseUrl: isPro ? 'http://caelum.wfeil.com/' : '/'
+  baseUrl: isPro ? 'https://caelum.wfeil.com/' : '/'
 }
