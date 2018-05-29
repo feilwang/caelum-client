@@ -25,11 +25,11 @@
     computed: mapState(['userInfo']),
     created() {
       let path = this.$route.path;
-      if (path === '/list') {
+      if (~path.indexOf('/list')) {
         this.active = 0;
-      } else if (path === '/my') {
+      } else if (~path.indexOf('/my')) {
         this.active = 1;
-      } else if (path === '/setting') {
+      } else if (~path.indexOf('/setting')) {
         this.active = 2;
       } else {
         this.active = 0;
