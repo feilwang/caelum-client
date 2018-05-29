@@ -32,7 +32,6 @@
 <script>
   import {Field, CellGroup, Button, Toast} from 'vant';
 
-  let phone, password;
   export default {
     components: {
       CellGroup,
@@ -48,8 +47,8 @@
     },
     methods: {
       login() {
-        phone = this.phone.trim();
-        password = this.password;
+        let phone = this.phone.trim();
+        let password = this.password;
         if (phone.trim() === '') {
           Toast('请输入手机号');
           return;
@@ -65,9 +64,10 @@
             password
           }
         }, res => {
+          let data = res.data;
           console.log('getUserInfo success:', res);
           Toast.success('登录成功！');
-          this.$store.commit('LOGIN', {isLogined: true, userInfo: res.data});
+          this.$store.dispatch('login', {token: data.token, userInfo: data});
           this.$router.push(this.$route.query.redirect || '/')
         }, err => {
           console.warn('getUserInfo failed:', err);

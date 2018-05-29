@@ -36,12 +36,12 @@
     <div class="mt15 text-right">
       <router-link to="/login">已有帐号？</router-link>
     </div>
-    <Button class="mt15" slot="button" size="normal" :block="true" type="primary">注册</Button>
+    <Button class="mt15" slot="button" size="normal" :block="true" type="primary" @click="register">注册</Button>
   </div>
 </template>
 
 <script>
-  import {Field, CellGroup, Button} from 'vant';
+  import {Field, CellGroup, Button, Toast} from 'vant';
 
   export default {
     components: {
@@ -55,6 +55,44 @@
         phone: '',
         password: '',
         repassword: ''
+      }
+    },
+    methods: {
+      register() {
+        let phone = this.phone.trim();
+        let password = this.password;
+        let repassword = this.repassword;
+        if (phone.length !== 11) {
+          Toast('请输入正确的手机号');
+          return;
+        }
+        if (password.length === 0) {
+          Toast('请输入密码');
+          return;
+        }
+        if (repassword.length === 0) {
+          Toast('请再次输入密码');
+          return;
+        }
+        if (repassword !== password) {
+          Toast('两次密码不一致');
+          return;
+        }
+        this.$request({
+          api: 'register',
+          params: {
+            phone,
+            password,
+            repassword
+          }
+        }, res => {
+          let data = res.data;
+          Toast.success('注册成功');
+          this.$store.dispatch('login', {token: data.token, userInfo: data});
+          this.$router.push('/')
+        }, err => {
+          Toast(err.message);
+        })
       }
     }
   }

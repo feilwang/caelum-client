@@ -5,16 +5,24 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations'
 import actions from './action'
+import getters from '@/store/getters';
 
 Vue.use(Vuex);
 
 const state = {
-  isLogined: false,
-  userInfo: {}
+  token: null,
+  userInfo: null,
+  edit: {
+    field: '',
+    value: '',
+    label: '',
+    placeholder: ''
+  }
 };
 
 export default new Vuex.Store({
   state,
   actions,
-  mutations
+  mutations,
+  getters
 })

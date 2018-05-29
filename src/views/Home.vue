@@ -10,7 +10,11 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+  // import store from '../store'
   import {Tabbar, TabbarItem} from 'vant'
+
+  let isLogined = false;
 
   export default {
     name: 'Home',
@@ -18,6 +22,7 @@
       Tabbar,
       TabbarItem
     },
+    computed: mapState(['userInfo']),
     created() {
       let path = this.$route.path;
       if (path === '/list') {
@@ -28,6 +33,23 @@
         this.active = 2;
       } else {
         this.active = 0;
+      }
+      if (!isLogined) {
+        this.getUserInfo();
+      }
+    },
+    methods: {
+      getUserInfo() {
+        this.$request({
+          api: 'getUserInfo'
+        }, res => {
+          let data = res.data;
+          isLogined = true;
+          console.log('getUserInfo success:', res);
+          this.$store.dispatch('login', {token: data.token, userInfo: data})
+        }, err => {
+          console.warn('getUserInfo failed:', err)
+        })
       }
     },
     data() {
