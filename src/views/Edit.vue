@@ -29,8 +29,9 @@
         icon="clear"
         @click-icon="clear"/>
     </CellGroup>
-    <div class="pd15">
+    <div class="buttons">
       <Button class="mt15" slot="button" size="normal" :block="true" type="primary" @click="save">保存</Button>
+      <Button class="mt15" slot="button" size="normal" :block="true" type="default" @click="cancel">取消</Button>
     </div>
   </div>
 </template>
@@ -103,11 +104,16 @@
         }, err => {
           Toast(err.message)
         });
+      },
+      cancel() {
+        this.$router.go(-1);
       }
     }
   }
 </script>
 
 <style scoped>
-
+  .buttons {
+    padding: 15px;
+  }
 </style>

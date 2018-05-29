@@ -2,9 +2,9 @@
   <div class="setting">
     <h2 class="pd15">设置</h2>
     <CellGroup>
-      <Cell title="联系我们" is-link/>
-      <Cell title="清理缓存" is-link/>
-      <Cell title="当前版本" value="0.0.1" is-link/>
+      <Cell title="清理缓存" is-link @click="sorry"/>
+      <Cell title="关于作者" is-link url="https://wfeil.com/about/"/>
+      <Cell title="当前版本" value="0.0.1"/>
     </CellGroup>
     <CellGroup class="mt15">
       <Cell title="退出登录" @click="logout" is-link/>
@@ -13,13 +13,14 @@
 </template>
 
 <script>
-  import {Cell, CellGroup, Dialog} from 'vant'
+  import {Cell, CellGroup, Dialog, Toast} from 'vant'
 
   export default {
     components: {
       CellGroup,
       Cell,
-      Dialog
+      Dialog,
+      Toast
     },
     name: 'Setting',
     methods: {
@@ -33,6 +34,9 @@
             path: '/'
           })
         });
+      },
+      sorry() {
+        Toast('还没有做好啦！O(∩_∩)O~')
       }
     }
   }

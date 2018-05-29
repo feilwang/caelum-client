@@ -1,17 +1,18 @@
 <template>
   <div>
     <h2 class="pd15">目标列表</h2>
-    <Cell v-for="item in list" :key="item.id" :title="item.title"/>
+    <Cell v-for="item in list" :key="item.id" :title="item.title" @click="sorry" is-link/>
   </div>
 </template>
 
 <script>
-  import {List, Cell} from 'vant';
+  import {List, Cell, Toast} from 'vant';
 
   export default {
     components: {
       List,
-      Cell
+      Cell,
+      Toast
     },
     name: 'List',
     data() {
@@ -28,7 +29,11 @@
         }]
       };
     },
-    methods: {}
+    methods: {
+      sorry() {
+        Toast('还没有做好啦！O(∩_∩)O~')
+      }
+    }
   }
 </script>
 
