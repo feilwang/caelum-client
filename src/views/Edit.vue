@@ -117,7 +117,7 @@
       save() {
         Toast.loading();
         let _field = this.edit.field;
-        let _value = this.edit.value.trim();
+        let _value = this.edit.value;
         if (_field === 'phone') {
           if (_value.length === 0) {
             Toast('请输入手机号');
@@ -128,8 +128,12 @@
             return;
           }
         }
+        if (_field === 'sex' && _value === null) {
+          Toast('请选择性别');
+          return;
+        }
         if (_field === 'email') {
-          if (!validate.isEmail(_field)) {
+          if (!validate.isEmail(_value)) {
             Toast('请输入正确的邮箱');
             return;
           }
