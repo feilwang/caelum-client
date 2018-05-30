@@ -116,6 +116,91 @@ let localCache = { // 本地缓存部分都在这里,
   }
 };
 
+let validate = {
+  isPhone(phone) {
+    return /^(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(phone)
+  },
+  isEmail(email) {
+    return /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(email)
+  }
+};
+
+let date = {
+  formatDate(date, format) {
+    if (!date) {
+      return;
+    }
+    if (!format) {
+      format = 'yyyy-MM-dd';
+    }
+    switch (typeof date) {
+      case 'string':
+        date = new Date(date.replace(/-/g, '/'));
+        break;
+      case 'number':
+        date = new Date(date);
+        break;
+    }
+    if (!(date instanceof Date)) {
+      return;
+    }
+    let dict = {
+      'yyyy': date.getFullYear(),
+      'M': date.getMonth() + 1,
+      'd': date.getDate(),
+      'H': date.getHours(),
+      'm': date.getMinutes(),
+      's': date.getSeconds(),
+      'MM': ('' + (date.getMonth() + 101)).substr(1),
+      'dd': ('' + (date.getDate() + 100)).substr(1),
+      'HH': ('' + (date.getHours() + 100)).substr(1),
+      'mm': ('' + (date.getMinutes() + 100)).substr(1),
+      'ss': ('' + (date.getSeconds() + 100)).substr(1),
+      'w': this.formatWeek(date)
+    };
+    return format.replace(/(yyyy|MM?|dd?|HH?|ss?|mm?|w)/g, function () {
+      return dict[arguments[0]];
+    });
+  },
+  formatWeek: function (date) {
+    let week;
+    switch (typeof date) {
+      case 'string':
+        date = new Date(date.replace(/-/g, '/'));
+        break;
+      case 'number':
+        date = new Date(date);
+        break;
+    }
+    switch (date.getDay()) {
+      case 0:
+        week = '周日';
+        break;
+      case 1:
+        week = '周一';
+        break;
+      case 2:
+        week = '周二';
+        break;
+      case 3:
+        week = '周三';
+        break;
+      case 4:
+        week = '周四';
+        break;
+      case 5:
+        week = '周五';
+        break;
+      case 6:
+        week = '周六';
+        break;
+    }
+    return week;
+  }
+};
+
 export {
-  localCache
+  localCache,
+  validate,
+  date
 }

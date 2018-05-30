@@ -10,9 +10,10 @@
       <CellGroup class="mt15">
         <Cell title="昵称" is-link @click="edit('nickName')"/>
         <Cell title="签名" is-link @click="edit('signature')"/>
-        <Cell title="性别" :value="userInfo.sex==0?'女':'男'" is-link @click="edit('sex')"/>
-        <Cell title="手机号" :value="userInfo.phone" is-link  @click="edit('phone')"/>
-        <Cell title="邮箱" :value="userInfo.email" is-link  @click="edit('email')"/>
+        <Cell title="性别" :value="sexText" is-link @click="edit('sex')"/>
+        <Cell title="手机号" :value="userInfo.phone" is-link @click="edit('phone')"/>
+        <Cell title="生日" :value="userInfo.birth" is-link @click="edit('birth')"/>
+        <Cell title="邮箱" :value="userInfo.email" is-link @click="edit('email')"/>
       </CellGroup>
     </div>
 
@@ -33,6 +34,15 @@
       Field
     },
     computed: {
+      sexText() {
+        if (this.userInfo.sex === 0) {
+          return '女'
+        } else if (this.userInfo.sex === 1) {
+          return '男'
+        } else {
+          return ''
+        }
+      },
       path() {
         return this.$route.path
       },

@@ -31,6 +31,7 @@
 
 <script>
   import {Field, CellGroup, Button, Toast} from 'vant';
+  import {validate} from '@/common/util';
 
   export default {
     components: {
@@ -49,8 +50,12 @@
       login() {
         let phone = this.phone.trim();
         let password = this.password;
-        if (phone.trim() === '') {
+        if (phone.length === 0) {
           Toast('请输入手机号');
+          return;
+        }
+        if (!validate.isPhone(phone)) {
+          Toast('请输入正确的手机号');
           return;
         }
         if (password === '') {

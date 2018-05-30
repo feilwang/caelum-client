@@ -14,6 +14,19 @@
           </Cell>
         </CellGroup>
       </RadioGroup>
+      <div v-else-if="edit.field==='birth'">
+        <Cell :title="edit.value||'请选择日期'" clickable @click="selectDate" is-link/>
+        <Popup v-model="pickShow" position="bottom" :overlay="true">
+          <DatetimePicker
+            v-model="birthDate"
+            type="date"
+            :min-date="minDate"
+            :max-date="maxDate"
+            @confirm="pickShow=false"
+            @cancel="pickShow=false"
+          />
+        </Popup>
+      </div>
       <Field
         v-else-if="edit.field==='signature'"
         type="textarea"
@@ -38,18 +51,12 @@
 
 <script>
   import {mapState} from 'vuex'
-  import {CellGroup, Cell, Field, RadioGroup, Radio, Button, Toast} from 'vant'
+  import {CellGroup, Cell, Field, RadioGroup, Radio, DatetimePicker, Button, Toast, Popup} from 'vant'
+  import {date, validate} from '@/common/util';
 
   export default {
     name: 'Edit',
-    components: {
-      CellGroup,
-      Cell,
-      Field,
-      Button,
-      RadioGroup,
-      Radio
-    },
+    components: {CellGroup, Cell, Field, RadioGroup, Radio, DatetimePicker, Button, Toast, Popup},
     created() {
       let field = this.$route.query.type;
       let fn = () => {
@@ -66,6 +73,8 @@
             label = '邮箱'
           } else if (field === 'sex') {
             label = '性别'
+          } else if (field === 'birth') {
+            label = '生日'
           }
           this.$store.dispatch('setEditField', {
             label: label,
@@ -81,24 +90,61 @@
       };
       fn()
     },
-    computed: mapState(['userInfo', 'edit']),
+    computed: {
+      ...mapState(['userInfo', 'edit'])
+    },
+    data() {
+      return {
+        pickShow: false,
+        birthDate: null,
+        minDate: new Date('1900-01-01'),
+        maxDate: new Date()
+      }
+    },
+    watch: {
+      birthDate() {
+        this.edit.value = date.formatDate(this.birthDate)
+      }
+    },
     methods: {
       clear() {
         this.$store.dispatch('clearEditValue')
       },
+      selectDate() {
+        this.pickShow = true;
+        this.birthDate = this.edit.value ? new Date(this.edit.value) : new Date('1990-01-01');
+      },
       save() {
         Toast.loading();
+        let _field = this.edit.field;
+        let _value = this.edit.value.trim();
+        if (_field === 'phone') {
+          if (_value.length === 0) {
+            Toast('请输入手机号');
+            return;
+          }
+          if (!validate.isPhone(_value)) {
+            Toast('请输入正确的手机号');
+            return;
+          }
+        }
+        if (_field === 'email') {
+          if (!validate.isEmail(_field)) {
+            Toast('请输入正确的邮箱');
+            return;
+          }
+        }
         this.$request({
           api: 'modifyUserInfo',
           params: {
-            field: this.edit.field,
-            value: this.edit.value
+            field: _field,
+            value: _value
           }
         }, () => {
           Toast.success('修改成功');
           this.$store.dispatch('saveUserInfo', {
-            field: this.edit.field,
-            value: this.edit.value
+            field: _field,
+            value: _value
           });
           this.$router.go(-1);
         }, err => {
